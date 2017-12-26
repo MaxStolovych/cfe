@@ -3,25 +3,15 @@ from django.http import HttpResponse
 from django.views import View
 from django.views.generic import TemplateView
 
+from .models import Restaurant
+
 # Create your views here.
-#function based view
 
-def home(request):
-    return render(request, "home.html", {})
+def restaurant_list_view(request):
+    template_name = 'restaurants/restaurants_list.html'
+    queryset = Restaurant.objects.all()
+    context = {
+            'object_list': queryset
+            }
+    return render(request, template_name, context)
 
-def about(request):
-    return render(request, "about.html", {})
-
-def contacts(request):
-    return render(request, "contacts.html", {})
-
-class HomeView(TemplateView):
-    template_name = 'home.html'
-    
-    
-class AboutView(TemplateView):
-    template_name = 'about.html'
-
-
-class ContactView(TemplateView):
-    template_name = 'contacts.html'
