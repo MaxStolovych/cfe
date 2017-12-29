@@ -1,12 +1,26 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from django.db.models import Q
 
 from .models import Restaurant
+from .forms import RestaurantCreateForm, RestaurantLocationCreateForm
 
 # Create your views here.
+
+def restaurant_createview(request):
+    form = RestaurantLocationCreateForm(request.POST or None)
+    errors = None
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/restaurants/")
+    if form.errors:
+        errors =form.errors
+        
+    template_name = 'restaurants/form.html'
+    context = {"form": form, "errors": errors}
+    return render(request, template_name, context)
 
 def restaurant_list_view(request):
     template_name = 'restaurants/restaurants_list.html'
@@ -28,8 +42,7 @@ class RestaurantListView(ListView):
         else:
             queryset = Restaurant.objects.all()
         return queryset
-    
-
+ 
 
 class RestaurantDetailView(DetailView):
     queryset = Restaurant.objects.all()
@@ -44,3 +57,9 @@ class RestaurantDetailView(DetailView):
 #        rest_id = self.kwargs.get('rest_id')
 #        obj = get_object_or_404(Restaurant, id=rest_id)
 #        return obj
+        
+
+class RestaurantCreateView(CreateView):
+    form_class = RestaurantLocationCreateForm
+    template_name = 'restaurants/form.html'
+    success_url = "/restaurants/"
