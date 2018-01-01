@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView
+
+
+
+url(r'^accounts/login/$', LoginView.as_view()),
 
 from restaurants.views import (
                                restaurant_createview,
@@ -30,6 +35,7 @@ urlpatterns = [
     url(r'^restaurants/$', RestaurantListView.as_view()),
     #url(r'^restaurants/(?P<slug>\w+)/$', RestaurantListView.as_view()),
     #url(r'^restaurants/create/$', restaurant_createview),
+    url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^restaurants/create/$', RestaurantCreateView.as_view()),
     url(r'^restaurants/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view()),
     url(r'^about/', TemplateView.as_view(template_name='about.html')),
