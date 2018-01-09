@@ -19,7 +19,7 @@ class RestaurantLocationCreateForm(forms.ModelForm):
     #category = forms.CharField(required=False, validators=[validate_category])
     class Meta:
         model = Restaurant
-        fields = ['name', 'location', 'category']
+        fields = ['name', 'location', 'category', 'slug']
         
     def clean_name(self):
         name = self.cleaned_data.get("name")

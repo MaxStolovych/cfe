@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% if form.errors.non_field_errors %}
+{{ form.errors.non_field_errors }}
+{% endif %}
 
-</body>
-</html>
+<form method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <button type='submit'>Save</button>
+</form>
