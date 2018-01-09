@@ -6,18 +6,23 @@
 <hr/>
 {% if user.item_set.all.exists %}
 {% for rest in user.restaurant_set.all %}
-<li>
-    <b>{{ rest.title }}</b> | {{ rest.category }}
-        <ul>
-            {% for item in rest.item_set.all %}
-                <li style="margin-bottom: 15px;">{{ item.name }}<br/>
-                        {% for ing in item.get_contents %}
-                        <span style="padding: 2px 4px; margin-right:4px; background-color:#ccc">{{ ing }}</span>
-                        {% endfor %}
-                </li>
-            {% endfor %}
-        </ul>
-</li>
+<div class="row">
+    <div class="col-sm-12" style="border: 1px solid #ccc; border-radius: 7px; margin-bottom:15px;">
+        <div class="thumbnail"><!-- for bootstrap v4.0 <div class="card card-default">-->
+        <b>{{ rest.title }}</b> | {{ rest.category }}
+            <ul>
+                {% for item in rest.item_set.all %}
+                    <li style="margin-bottom: 15px;">{{ item.name }}<br/>
+                            {% for ing in item.get_contents %}
+                            <!--<span style="padding: 2px 4px; margin-right:4px; background-color:#ccc">{{ ing }}</span>-->
+                            <span class="badge badge-default">{{ ing }}</span>
+                            {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endfor %}
 
 {% else %}
