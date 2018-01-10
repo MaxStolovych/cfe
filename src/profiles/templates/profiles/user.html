@@ -3,9 +3,13 @@
 
 {% block content %}
 <h1>{{ user.username }}</h1>
+<form class="form" method="GET" action=".">
+    <input type="text" placeholder="Search.." name="q" value="{{ request.GET.q}}">
+    <button class="btn btn-default" type="submit">Search</button>
+</form>
 <hr/>
-{% if user.item_set.all.exists %}
-{% for rest in user.restaurant_set.all %}
+{% if locations %}
+{% for rest in locations %}
 <div class="row">
     <div class="col-sm-12" style="border: 1px solid #ccc; border-radius: 7px; margin-bottom:15px;">
         <div class="thumbnail"><!-- for bootstrap v4.0 <div class="card card-default">-->
@@ -15,7 +19,9 @@
                     <li style="margin-bottom: 15px;">{{ item.name }}<br/>
                             {% for ing in item.get_contents %}
                             <!--<span style="padding: 2px 4px; margin-right:4px; background-color:#ccc">{{ ing }}</span>-->
+                            <a href="{{ request.path }}?q={{ ing }}">
                             <span class="badge badge-default">{{ ing }}</span>
+                            </a>
                             {% endfor %}
                     </li>
                 {% endfor %}
