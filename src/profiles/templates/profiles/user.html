@@ -4,7 +4,7 @@
 {% block content %}
 <h1>{{ user.username }}</h1>
 <p>{{ request.user.is_following.all }}</p>
-<p>{{ request.user.followers.all }}Y</p>
+
 
 <p>{% include 'profiles/snippet/follow_form.html' with username=user.username is_following=is_following %}</p>
 <form class="form" method="GET" action=".">
