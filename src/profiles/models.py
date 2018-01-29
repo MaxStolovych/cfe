@@ -29,6 +29,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+    def send_activation_email(self):
+        pass
+
 
 def post_save_user_receiver(sender, instance, created, *args, **kwargs):
     if created:

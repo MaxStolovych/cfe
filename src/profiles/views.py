@@ -2,13 +2,26 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import View, DetailView
+from django.views.generic import CreateView, View, DetailView
 
 from restaurants.models import Restaurant
 from menus.models import Item
+from .forms import RegisterForm
 from .models import Profile
 
 User = get_user_model()
+
+
+class RegisterView(CreateView):
+    form_class = RegisterForm
+    template_name = 'registration/register.html'
+    success_url = '/'
+
+    def dispatch(self, *args, **kwargs):
+        if self.request.user.is_authenticated():
+            redirect("/logout")
+        return super(RegisterView, self).dispatch(*args, **kwargs)
+
 
 class ProfileFollowToggle(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
@@ -16,6 +29,7 @@ class ProfileFollowToggle(LoginRequiredMixin, View):
         username_to_toggle = request.POST.get("username")
         profile_, is_following = Profile.objects.toggle_follow(request.user, username_to_toggle)
         return redirect("/u/{}/".format(profile_.user.username))
+
 
 class ProfileDetailView(DetailView):
     template_name = 'profiles/user.html'
